@@ -5,10 +5,27 @@ import urllib
 import urllib2
 import socket
 import netifaces
+import time
 
 
 STUID = ''
 STUPASS = ''
+
+
+def internet_on():
+    """
+    check if internet_on
+    """
+    try:
+        response = urllib2.urlopen('http://baidu.com', timeout=1)
+        html = response.read()
+        if html.startswith('<html>'):
+            return True
+        else:
+            return False
+    except urllib2.URLError as err: 
+        return False
+
 
 def getv6ip():
     if socket.has_ipv6:
@@ -37,4 +54,11 @@ def main():
     print response.getcode()
 
 if __name__ == '__main__':
-    main()
+    # main()
+    while True:
+        if internet_on():
+            print 'yes'
+        else:
+            print 'no'
+
+        time.sleep(1)
