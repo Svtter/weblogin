@@ -18,11 +18,11 @@ DOC
 HOWTO
 -----
 
-`python weblogin.py`
+``python weblogin.py``
 
 or
 
-`alias online='screen -S online -d -m python ~/login.py'`
+``alias online='screen -S online -d -m python ~/login.py'``
 
 
 内网穿透使用了 https://github.com/aploium/shootback 的解决方案。
