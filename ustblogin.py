@@ -1,11 +1,17 @@
 #!/usr/bin/env python
 # coding:utf-8
 
+"""
+Make computer always online.
+
+"""
+
 import urllib
 import urllib2
 import socket
 import netifaces
 import time
+import schedule
 
 
 STUID = ''
@@ -27,6 +33,7 @@ def internet_on():
         return False
 
 
+
 def getv6ip():
     if socket.has_ipv6:
         addrinfos = socket.getaddrinfo(socket.gethostname(), 80, 0, 0, socket.IPPROTO_TCP)
@@ -41,7 +48,7 @@ def getv6ip():
 url = 'http://202.204.48.82/'
 
 
-def main():
+def connect_internet():
     v6ip = getv6ip()
     v6ip = '2001:da8:208:21b:8d16:5863:fdc2:f1d5'
 
@@ -53,12 +60,21 @@ def main():
     response = urllib2.urlopen(request)
     print response.getcode()
 
-if __name__ == '__main__':
-    # main()
-    while True:
-        if internet_on():
-            print 'yes'
-        else:
-            print 'no'
 
+def schedule_connect():
+
+    def check_internet():
+        if internet_on():
+            return
+        else:
+            connect_internet()
+
+    schedule.every(10).to(20).minutes.do(check_internet)
+
+    while 1:
+        schedule.run_pending()
         time.sleep(1)
+
+
+if __name__ == '__main__':
+    schedule_connect()
